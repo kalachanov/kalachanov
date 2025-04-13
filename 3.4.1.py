@@ -12,13 +12,14 @@ cursor.execute('drop table if exists kord')
 
 cursor.execute('create table if not exists kord (id integer primary key autoincrement, x text not null, y text not null)')
 
-cursor.execute("insert into kord (x, y) VALUES (?, ?)", (10, 20))
-cursor.execute("insert into kord (x, y) VALUES (?, ?)", (20, 10))
+cursor.execute("insert into kord (x, y) VALUES (?, ?)", (11, 11))
+cursor.execute("insert into kord (x, y) VALUES (?, ?)", (22, 22))
 
 cursor.execute("select x from kord")
 x = cursor.fetchall()
 cursor.execute("select y from kord")
 y = cursor.fetchall()
+conn.commit()
 
 class Window(QMainWindow):
     def __init__(self):
@@ -80,3 +81,4 @@ class Window(QMainWindow):
 app = QApplication(sys.argv)
 window = Window()
 sys.exit(app.exec_())
+conn.close()
