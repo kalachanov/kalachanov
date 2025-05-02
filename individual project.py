@@ -18,14 +18,18 @@ class Window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Окно")
-        self.setGeometry(500, 100, 500, 300)
+        self.setGeometry(400, 100, 900, 300)
 
         self.label = QLabel(self)
         self.label.setText("id, data_priema, d.id, h.id, h.name, h.suranme, h.god, d.name d.surname")
-        self.label.setGeometry(10, 0, 500, 30)
+        self.label.setGeometry(10, 0, 400, 30)
 
         self.list = QListWidget(self)
-        self.list.setGeometry(0, 30, 500, 120)
+        self.listh = QListWidget(self)
+        self.listd = QListWidget(self)
+        self.list.setGeometry(0, 30, 300, 120)
+        self.listh.setGeometry(300, 30, 300, 120)
+        self.listd.setGeometry(600, 30, 300, 120)
         self.f5()
 
         self.button_intput = QPushButton(self)
@@ -45,32 +49,32 @@ class Window(QMainWindow):
 
         self.button_intput_doctor = QPushButton(self)
         self.button_intput_doctor.setText("Ввести врача")
-        self.button_intput_doctor.setGeometry(0, 180, 100, 30)
+        self.button_intput_doctor.setGeometry(600, 150, 100, 30)
         self.button_intput_doctor.clicked.connect(self.btninputdatadoctor)
 
         self.button_update_doctor = QPushButton(self)
         self.button_update_doctor.setText("Изменить врача")
-        self.button_update_doctor.setGeometry(100, 180, 100, 30)
+        self.button_update_doctor.setGeometry(700, 150, 100, 30)
         self.button_update_doctor.clicked.connect(self.btnupdatedatadoctor)
 
         self.button_delete_doctor = QPushButton(self)
         self.button_delete_doctor.setText("Удалить врача")
-        self.button_delete_doctor.setGeometry(200, 180, 100, 30)
+        self.button_delete_doctor.setGeometry(800, 150, 100, 30)
         self.button_delete_doctor.clicked.connect(self.btndeletedatadoctor)
 
         self.button_intput_human = QPushButton(self)
         self.button_intput_human.setText("Ввести пациента")
-        self.button_intput_human.setGeometry(0, 210, 100, 30)
+        self.button_intput_human.setGeometry(300, 150, 100, 30)
         self.button_intput_human.clicked.connect(self.btninputdatahuman)
 
         self.button_update_human = QPushButton(self)
         self.button_update_human.setText("Изменить пациента")
-        self.button_update_human.setGeometry(100, 210, 100, 30)
+        self.button_update_human.setGeometry(400, 150, 100, 30)
         self.button_update_human.clicked.connect(self.btnupdatedatahuman)
 
         self.button_delete_human = QPushButton(self)
         self.button_delete_human.setText("Удалить пациента")
-        self.button_delete_human.setGeometry(200, 210, 100, 30)
+        self.button_delete_human.setGeometry(500, 150, 100, 30)
         self.button_delete_human.clicked.connect(self.btndeletedatahuman)
 
         lay = QHBoxLayout()
@@ -94,8 +98,24 @@ class Window(QMainWindow):
     def f5(self):
         cursor.execute('select * from zapis inner join human on zapis.human_id = human.id inner join doctor on zapis.doctor_id = doctor.id')
         self.list.clear()
-        for z in cursor.fetchall():
+        zapis = cursor.fetchall()
+        for z in zapis:
             self.list.addItem(f"{z[0]}, {z[1]}, {z[2]}, {z[3]}, {z[5]}, {z[6]}, {z[7]}, {z[9]}, {z[10]}")
+        conn.commit()
+        
+        cursor.execute('select * from human')
+        self.listh.clear()
+        human = cursor.fetchall()
+        for h in human:
+            self.listh.addItem(f"{h[0]}, {h[1]}, {h[2]}, {h[3]}")
+        conn.commit()
+
+        cursor.execute('select * from doctor')
+        self.listd.clear()
+        doctor = cursor.fetchall()
+        for d in doctor:
+            self.listd.addItem(f"{d[0]}, {d[1]}, {d[2]}")
+        conn.commit()
 
     def btninputdata(self):
         name = QInputDialog.getText(self, 'Input','Input data priema')
