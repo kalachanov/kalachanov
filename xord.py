@@ -2,14 +2,14 @@ import math
 
 n = 100
 n = int(input('n = '))
-E = float(1)
 # e = float(input('e = '))
 a = float(input('a = '))
 b = float(input('b = '))
+E = a - b
 i = 1
 
 def summa(s):
-    return math.cos(s) - s
+    return s**3-2*s**2+3*s-5
 
 f1 = summa(a)
 f2 = summa(b)
@@ -19,7 +19,7 @@ if (f1 == f2):
     print('Корней нет')
 else:
     for fi in range(n):
-        c = round((a - summa(a) * (b-a)/(summa(b) - summa(a))), 4)
+        c = round((a - summa(a) * ((b-a)/(summa(b) - summa(a)))), 4)
         F = round((summa(c)), 4)
         if (F < 0):
             a = c
